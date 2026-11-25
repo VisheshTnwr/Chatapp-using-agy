@@ -153,6 +153,8 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
   const searchInputRef = useRef<HTMLInputElement | null>(null);
 
   const isDirect = conversation.type === 'direct';
+  const isNetlifyApp =
+    typeof window !== 'undefined' && window.location.hostname.endsWith('.netlify.app');
   const myRole = conversation.my_membership.role;
   const isAdmin = myRole === 'owner' || myRole === 'admin';
   const cantSendReason = isBlocked
@@ -648,7 +650,9 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
       {showScrollBottom && (
         <button
           onClick={scrollToBottom}
-          className="absolute bottom-24 right-6 p-2.5 rounded-full bg-[var(--bg-panel)] border border-[var(--border-strong)] text-[var(--text-primary)] shadow-xl hover:bg-[var(--bg-elevated)] transition cursor-pointer z-20"
+          className={`absolute ${
+            isNetlifyApp ? 'bottom-36' : 'bottom-24'
+          } right-6 p-2.5 rounded-full bg-[var(--bg-panel)] border border-[var(--border-strong)] text-[var(--text-primary)] shadow-xl hover:bg-[var(--bg-elevated)] transition cursor-pointer z-20`}
           title="Scroll to latest messages"
         >
           <ArrowDown className="w-4.5 h-4.5" />
@@ -656,7 +660,11 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
       )}
 
       {/* Composer Area */}
-      <div className="px-2.5 pt-2.5 pb-safe sm:px-5 bg-[var(--bg-sidebar)] border-t border-[var(--border-subtle)]">
+      <div
+        className={`px-2.5 pt-2.5 ${
+          isNetlifyApp ? 'pb-14' : 'pb-safe'
+        } sm:px-5 bg-[var(--bg-sidebar)] border-t border-[var(--border-subtle)]`}
+      >
         {/* Reply or Edit Preview */}
         {(replyingTo || editingMsg) && (
           <div className="mb-2 px-3 py-2 rounded-xl bg-[var(--bg-panel)] border-l-2 border-[var(--accent)] flex items-center justify-between gap-3">
